@@ -8,7 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 // DB Configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("pg"));
+    var connectionString = builder.Configuration.GetConnectionString("pg");
+    Console.WriteLine($"connectionString {connectionString}");
+    options.UseNpgsql(connectionString);
 });
 
 // Automapper Configuration

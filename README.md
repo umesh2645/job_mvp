@@ -5,3 +5,7 @@
 - TypeScript
 - Postgres
 - Entity Framework Core
+
+## Docker compose commands
+
+`docker compose up -d`
