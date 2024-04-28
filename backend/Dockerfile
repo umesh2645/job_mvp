@@ -3,7 +3,7 @@ WORKDIR /app
 EXPOSE 8080
 # EXPOSE 8081
 
-ENV ConnectionStrings:pg=Host=localhost;Port=5432;Database=job;Username=myuser;Password=mypassword;
+ENV ConnectionStrings__pg=Host=localhost;Port=5432;Database=job;Username=myuser;Password=mypassword;
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 ARG BUILD_CONFIGURATION=Release
