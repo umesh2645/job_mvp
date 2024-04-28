@@ -50,8 +50,9 @@ services:
     environment:
       NODE_ENV: production
       REACT_APP_BASE_URL: http://localhost:7071/api
+      REACT_APP_VERSION: 0.1.0
     ports:
-      - 3000:3000
+      - 7072:80
     depends_on:
       - backend
 
