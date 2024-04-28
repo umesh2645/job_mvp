@@ -30,7 +30,7 @@ builder.Services.AddHealthChecks();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder => {
-        builder.WithOrigins("http://localhost:3000");
+        builder.WithOrigins("http://localhost:7072");
         builder.WithMethods("GET", "POST", "DELETE", "PUT");
         builder.AllowAnyHeader();
     });
