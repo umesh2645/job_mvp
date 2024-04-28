@@ -39,6 +39,7 @@ namespace backend.Controllers
             }
 
             var resumeUrl = Guid.NewGuid().ToString() + ".pdf";
+            CreateDirectoryIfNotExist();
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "documents", "pdfs", resumeUrl);
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
@@ -50,6 +51,18 @@ namespace backend.Controllers
             await _context.SaveChangesAsync();
 
             return Ok("Candidate Saved Successfully");
+        }
+
+        private static void CreateDirectoryIfNotExist()
+        {
+            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "documents", "pdfs");
+            // Check if the directory exists
+            if (!Directory.Exists(directoryPath))
+            {
+                // If it doesn't exist, create it
+                Directory.CreateDirectory(directoryPath);
+                Console.WriteLine("Directory created successfully.");
+            }
         }
 
         // Read

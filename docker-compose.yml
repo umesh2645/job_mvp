@@ -45,13 +45,15 @@ services:
   frontend:
     image: umesh2645/job_mvp_frontend
     build:
-      context: .
-      dockerfile: ./frontend/Dockerfile
+      context: ./frontend
+      dockerfile: ./Dockerfile
     environment:
       NODE_ENV: production
-      REACT_APP_BASE_URL: backend/api
+      REACT_APP_BASE_URL: http://localhost:7071/api
     ports:
       - 3000:3000
+    depends_on:
+      - backend
 
 volumes:
   job_mvp_pg_data:

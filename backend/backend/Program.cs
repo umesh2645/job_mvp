@@ -27,7 +27,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddRouting();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
-
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder => {
+        builder.WithOrigins("http://localhost:3000");
+        builder.WithMethods("GET", "POST", "DELETE", "PUT");
+        builder.AllowAnyHeader();
+    });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,6 +54,7 @@ app.UseCors(options =>
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseCors();
 app.UseAuthorization();
 app.MapControllers();
 
