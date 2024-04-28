@@ -2,7 +2,6 @@
 using backend.Core.Context;
 using backend.Core.Dtos.Candidate;
 using backend.Core.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -83,7 +82,7 @@ namespace backend.Controllers
         {
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "documents", "pdfs", url);
 
-            if(!System.IO.File.Exists(filePath))
+            if (!System.IO.File.Exists(filePath))
             {
                 return NotFound("File Not Found");
             }

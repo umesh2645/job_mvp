@@ -1,5 +1,4 @@
-﻿using backend.Core.Entities;
-using backend.Core.Enums;
+﻿using backend.Core.Enums;
 
 namespace backend.Core.Dtos.Job
 {

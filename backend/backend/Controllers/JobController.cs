@@ -2,7 +2,6 @@
 using backend.Core.Context;
 using backend.Core.Dtos.Job;
 using backend.Core.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
