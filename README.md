@@ -25,6 +25,8 @@ kubectl get pv
 kubectl get pvc
 
 kubectl describe svc job-mvp-backend-svc
+-- check clusterip of postgres which is needed to connect by backend on resolving
+kubectl get svc job-mvp-backend-svc -n job-mvp-ns
 
 kubectl scale deployment job-mvp-backend --replicas=0
 
