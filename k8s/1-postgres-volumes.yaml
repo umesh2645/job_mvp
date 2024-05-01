@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgres-pv
+  name: job-mvp-postgres-pv
   namespace: job-mvp-ns
   labels:
     type: local
@@ -11,30 +11,30 @@ spec:
   capacity:
     storage: 2Gi
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   hostPath:
-    path: /run/desktop/mnt/host/c/k8s/pg/jobs_mvp/
+    path: /run/desktop/mnt/host/c/k8s/pg/jobs-mvp/
     type: DirectoryOrCreate
   nodeAffinity:
     required:
       nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - docker-desktop
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - docker-desktop
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pvc
+  name: job-mvp-postgres-pvc
   namespace: job-mvp-ns
 spec:
   storageClassName: manual
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
-  volumeName: postgres-pv
+  volumeName: job-mvp-postgres-pv
