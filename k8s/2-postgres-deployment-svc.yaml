@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: job-mvp-postgres
+  labels:
+    app: job-mvp
+    tier: db
+  namespace: job-mvp-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: job-mvp-postgres
+      tier: db
+  template:
+    metadata:
+      labels:
+        app: job-mvp-postgres
+        tier: db
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:latest
+        env:
+        - name: POSTGRES_DB
+          value: job
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: password
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+        - name: init-script
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: job-mvp-postgres-pvc
+      - name: init-script
+        configMap:
+          name: postgres-init-script
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: job-mvp-postgres-svc
+  namespace: job-mvp-ns
+spec:
+  selector:
+    app: job-mvp-postgres
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
+  # type: NodePort

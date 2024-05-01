@@ -1,0 +1,66 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: job-mvp-frontend
+  namespace: job-mvp-ns
+  labels:
+    app: job-mvp-frontend
+    tier: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: job-mvp-frontend
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: job-mvp-frontend
+        tier: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: umesh2645/job_mvp_frontend
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http-server
+          containerPort: 80
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "1"
+          requests:
+            memory: 512Mi
+            cpu: "0.2"
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: REACT_APP_BASE_URL
+          value: http://job-mvp-backend:7071/api
+        - name: REACT_APP_VERSION
+          value: 0.1.0
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d
+      volumes:
+      - name: nginx-config
+        hostPath:
+          path: /run/desktop/mnt/host/c/Users/umesh/OneDrive/Documents/GitHub/job_mvp/nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: job-mvp-frontend-svc
+  namespace: job-mvp-ns
+  labels:
+    app: job-mvp-frontend-svc
+    tier: frontend
+spec:
+  type: NodePort
+  selector:
+    app: job-mvp-frontend-svc
+    tier: frontend
+  ports:
+  - port: 80
+    targetPort: http-server
+    nodePort: 32754
