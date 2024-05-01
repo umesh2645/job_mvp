@@ -47,6 +47,15 @@ metadata:
     app: job-mvp-backend-svc
     tier: backend
 spec:
+  # type: LoadBalancer
+  # selector:
+  #   app: job-mvp-backend-svc
+  #   tier: backend
+  # ports:
+  # - name: http
+  #   port: 8080
+  #   targetPort: 8080
+  #   nodePort: 32753
   type: NodePort
   selector:
     app: job-mvp-backend-svc

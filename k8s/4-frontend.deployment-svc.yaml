@@ -56,6 +56,15 @@ metadata:
     app: job-mvp-frontend-svc
     tier: frontend
 spec:
+  # type: LoadBalancer
+  # selector:
+  #   app: job-mvp-frontend-svc
+  #   tier: frontend
+  # ports:
+  # - name: http
+  #   port: 80
+  #   targetPort: http-server
+  #   nodePort: 32754
   type: NodePort
   selector:
     app: job-mvp-frontend-svc
