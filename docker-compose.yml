@@ -55,8 +55,6 @@ services:
       - 7072:80
     depends_on:
       - backend
-    volumes:
-      - ./.nginx :/etc/nginx/conf.d
 
 volumes:
   job_mvp_pg_data:
