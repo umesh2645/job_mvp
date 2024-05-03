@@ -1,29 +1,30 @@
-# Stage 1: Build the React app
+# Stage 1: Build React App
 FROM node:lts-alpine as build
-
 WORKDIR /app
+ARG NODE_ENV
+ARG REACT_APP_BASE_URL
+ARG REACT_APP_VERSION
 
-# Copy package files and install dependencies
+# Set default values for build-time arguments
+ARG DEFAULT_NODE_ENV=production
+ARG DEFAULT_REACT_APP_BASE_URL=http://localhost:7071/api
+ARG DEFAULT_REACT_APP_VERSION=0.1.0
+
+# Use build-time arguments or defaults
+ENV NODE_ENV=${NODE_ENV:-$DEFAULT_NODE_ENV}
+ENV REACT_APP_BASE_URL=${REACT_APP_BASE_URL:-$DEFAULT_REACT_APP_BASE_URL}
+ENV REACT_APP_VERSION=${REACT_APP_VERSION:-$DEFAULT_REACT_APP_VERSION}
+
 COPY package*.json ./
 RUN npm install --production --silent
-
-# Copy the rest of the application code
 COPY . .
 
 # Build the React app
-ENV NODE_ENV=production
-ENV REACT_APP_BASE_URL=http://localhost:7071/api
-ENV REACT_APP_VERSION=0.1.0
 RUN npm run build
 
-# Stage 2: Serve the built React app
+# Stage 2: Serve React App with Nginx
 FROM nginx:alpine
-
-# Copy the built app from the build stage
 COPY --from=build /app/build /usr/share/nginx/html
-
-# Expose port 80 to the outside world
+COPY .nginx /etc/nginx/.nginx
 EXPOSE 80
-
-# Command to run NGINX
 CMD ["nginx", "-g", "daemon off;"]

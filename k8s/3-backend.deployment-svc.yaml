@@ -3,64 +3,52 @@ kind: Deployment
 metadata:
   name: job-mvp-backend
   namespace: job-mvp-ns
-  labels:
-    app: job-mvp-backend
-    tier: backend
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: job-mvp-backend
       tier: backend
+      track: stable
+  replicas: 1
   template:
     metadata:
       labels:
         app: job-mvp-backend
         tier: backend
+        track: stable
     spec:
       containers:
-      - name: job-mvp-backend
-        image: umesh2645/job_mvp_backend
-        imagePullPolicy: IfNotPresent
-        ports:
-        - name: http-server
-          containerPort: 8080
-        resources:
-          limits:
-            memory: 512Mi
-            cpu: "1"
-          requests:
-            memory: 512Mi
-            cpu: "0.2"
-        env:
-        - name: PORT
-          value: "8080"
-        - name: ConnectionStrings__pg
-          value: Host=job-mvp-postgres-svc.job-mvp-ns.svc.cluster.local;Port=5432;Database=job;Username=myuser;Password=mypassword;
+        - name: job-mvp-backend
+          image: umesh2645/job_mvp_backend
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 512Mi
+              cpu: "0.2"
+          env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: "Development"
+          - name: ConnectionStrings__pg
+            value: Host=job-mvp-postgres-svc.job-mvp-ns.svc.cluster.local;Port=5432;Database=job;Username=myuser;Password=mypassword;
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: job-mvp-backend-svc
   namespace: job-mvp-ns
-  labels:
-    app: job-mvp-backend-svc
-    tier: backend
 spec:
-  # type: LoadBalancer
-  # selector:
-  #   app: job-mvp-backend-svc
-  #   tier: backend
-  # ports:
-  # - name: http
-  #   port: 8080
-  #   targetPort: 8080
-  #   nodePort: 32753
-  type: NodePort
   selector:
-    app: job-mvp-backend-svc
+    app: job-mvp-backend
     tier: backend
   ports:
-  - port: 8080
-    targetPort: http-server
-    nodePort: 32753
+    - protocol: "TCP"
+      port: 8080
+      targetPort: http
+      nodePort: 30003
+  type: NodePort

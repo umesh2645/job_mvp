@@ -1,9 +1,11 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS base
 WORKDIR /app
 EXPOSE 8080
-# EXPOSE 8081
 
-ENV ConnectionStrings__pg=Host=localhost;Port=5432;Database=job;Username=myuser;Password=mypassword;
+# Define default environment variables
+ENV ASPNETCORE_ENVIRONMENT=Development
+ARG DEFAULT_CONNECTION_STRING="Host=localhost;Port=5432;Database=job;Username=myuser;Password=mypassword;"
+ENV ConnectionStrings__pg=$DEFAULT_CONNECTION_STRING
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 ARG BUILD_CONFIGURATION=Release
@@ -12,11 +14,11 @@ COPY ["backend/backend.csproj", "backend/"]
 RUN dotnet restore "./backend/backend.csproj"
 COPY ["backend/", "./backend/"]
 WORKDIR "/src/backend"
-RUN dotnet build "./backend.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./backend.csproj" -c $BUILD_CONFIGURATION -o /app/build /p:ConnectionStrings__pg=$ConnectionStrings__pg
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./backend.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./backend.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false /p:ConnectionStrings__pg=$ConnectionStrings__pg
 
 # Building final image used in running container
 FROM base AS final
@@ -24,6 +26,7 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 
 # Installing procps on the container to enable debugging of .NET Core
-RUN apk update \
-    && apk add unzip procps
+RUN apk update && apk add unzip procps
+
+# Define the entry point for the container
 ENTRYPOINT ["dotnet", "backend.dll"]
