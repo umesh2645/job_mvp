@@ -20,10 +20,22 @@ docker build --build-arg ConnectionStrings__pg="Host=myhost;Port=5432;Database=m
 
 ## Docker compose commands
 
-`docker compose up -d --build`
+```
+docker compose up -d --build
+```
 
-## K8s commands
+## Final run all
 
+```
+kubectl apply -f 1-postgres-volumes.yaml
+kubectl apply -f 2-postgres-deployment-svc.yaml
+kubectl apply -f 3-backend.deployment-svc.yaml
+kubectl apply -f 4-frontend.deployment-svc.yaml
+```
+
+### Other K8s debug commands
+
+```
 kubectl delete --all all
 kubectl create ns job-mvp-ns
 kubectl config set-context --current --namespace=job-mvp-ns
@@ -42,5 +54,4 @@ kubectl describe svc job-mvp-backend-svc
 kubectl get svc job-mvp-backend-svc -n job-mvp-ns
 
 kubectl scale deployment job-mvp-backend --replicas=0
-
---
+```
