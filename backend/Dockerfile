@@ -2,10 +2,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS base
 WORKDIR /app
 EXPOSE 8080
 
-# Define default environment variables
-ENV ASPNETCORE_ENVIRONMENT=Development
-ARG DEFAULT_CONNECTION_STRING="Host=localhost;Port=5432;Database=job;Username=myuser;Password=mypassword;"
-ENV ConnectionStrings__pg=$DEFAULT_CONNECTION_STRING
+ENV ConnectionStrings__pg=Host=localhost;Port=5432;Database=job;Username=myuser;Password=mypassword;
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 ARG BUILD_CONFIGURATION=Release
