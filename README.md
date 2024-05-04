@@ -8,11 +8,9 @@
 
 # Frontend Docker image build
 
-docker build --build-arg NODE_ENV=production --build-arg REACT_APP_BASE_URL=http://localhost:30003/api --build-arg REACT_APP_VERSION=1.0.0 -t umesh2645/job_mvp_frontend .
+<!-- docker build --build-arg REACT_APP_BASE_URL=http://job-mvp-backend-svc:30003/api -t umesh2645/job_mvp_frontend . -->
 
-```
-docker build --build-arg ConnectionStrings__pg="Host=myhost;Port=5432;Database=mydb;Username=myuser;Password=mypassword;" -t umesh2645/job_mvp_backend .
-```
+docker build --build-arg REACT_APP_BASE_URL=http://localhost:30003/api -t umesh2645/job_mvp_frontend .
 
 ## Docker compose commands
 
@@ -24,10 +22,9 @@ kubectl create ns job-mvp-ns
 kubectl config set-context --current --namespace=job-mvp-ns
 
 kubectl create secret generic postgres-credentials --from-literal=username=myuser --from-literal=password=mypassword
+kubectl create configmap postgres-init-script --from-file=init.sql
 kubectl get secrets
 kubectl get secret postgres-credentials -o jsonpath='{.data}'
-
-kubectl create configmap postgres-init-script --from-file=init.sql
 
 kubectl apply -f .\postgres-volumes.yaml
 kubectl get pv

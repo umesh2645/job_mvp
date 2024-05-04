@@ -14,7 +14,7 @@ spec:
   - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   hostPath:
-    path: /run/desktop/mnt/host/c/k8s/pg/jobs-mvp/
+    path: /run/desktop/mnt/host/c/k8s/jobs-mvp/postgres
     type: DirectoryOrCreate
   nodeAffinity:
     required:
