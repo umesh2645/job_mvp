@@ -47,10 +47,10 @@ services:
     build:
       context: ./frontend
       dockerfile: ./Dockerfile
-    environment:
-      NODE_ENV: development
-      REACT_APP_BASE_URL: http://localhost:7071/api
-      REACT_APP_VERSION: 1.1.1
+      args:
+        - NODE_ENV=production
+        - REACT_APP_VERSION=1.1.1
+        - REACT_APP_BASE_URL=http://localhost:7071/api
     ports:
       - 7072:80
     depends_on:

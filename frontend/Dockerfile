@@ -5,11 +5,12 @@ RUN npm install --production --silent
 COPY . .
 
 ARG REACT_APP_BASE_URL
-ARG DEFAULT_REACT_APP_BASE_URL=http://localhost:7071/api
+ARG NODE_ENV
+ARG REACT_APP_VERSION
 
-ENV NODE_ENV=production
-ENV REACT_APP_VERSION=0.1.0
-ENV REACT_APP_BASE_URL=${REACT_APP_BASE_URL:-$DEFAULT_REACT_APP_BASE_URL}
+ENV NODE_ENV=${NODE_ENV:-development}
+ENV REACT_APP_VERSION=${REACT_APP_VERSION:-0.1.0}
+ENV REACT_APP_BASE_URL=${REACT_APP_BASE_URL:-http://localhost:7071/api}
 RUN npm run build
 
 FROM nginx:stable-alpine as production
