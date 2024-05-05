@@ -8,7 +8,7 @@
 
 # Frontend Docker image build
 
-<!-- docker build --build-arg REACT_APP_BASE_URL=http://job-mvp-backend-svc:30003/api -t umesh2645/job_mvp_frontend . -->
+docker build --build-arg REACT_APP_BASE_URL=http://localhost:7001/api -t umesh2645/job_mvp_frontend .
 
 docker build --build-arg REACT_APP_BASE_URL=http://localhost:30003/api -t umesh2645/job_mvp_frontend .
 
