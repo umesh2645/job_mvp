@@ -9,10 +9,7 @@ const Home = () => {
           You are running version <b>{process.env.REACT_APP_VERSION} </b>{" "}
           application in <b>{process.env.NODE_ENV}</b> mode.
         </small>
-        REACT_APP_BASE_URL :{" "}
-        <small>
-          <b>{process.env.REACT_APP_BASE_URL}</b>
-        </small>
+        REACT_APP_BASE_URL: <strong>{process.env.REACT_APP_BASE_URL}</strong>
       </p>
       <span>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
